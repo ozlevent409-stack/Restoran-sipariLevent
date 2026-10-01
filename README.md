@@ -4,225 +4,279 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Restoran Sipariş Hesaplama</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
     background: #f3f3f3;
-    margin: 0;
     padding: 15px;
+    margin: 0;
 }
+
 .container {
     max-width: 500px;
     margin: auto;
     background: white;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 }
+
 h1 {
     text-align: center;
-    font-size: 24px;
 }
-h2 {
-    margin-top: 25px;
+
+.urun {
+    background: #f5f5f5;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
 }
+
 label {
     display: block;
-    margin-top: 12px;
     font-weight: bold;
+    margin-top: 12px;
 }
-select,
-input {
+
+input, select {
     width: 100%;
     box-sizing: border-box;
     padding: 12px;
-    margin-top: 6px;
+    margin-top: 5px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 16px;
 }
-.product {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f7f7f7;
-    border-radius: 10px;
-}
-.product h3 {
-    margin-top: 0;
-}
+
 button {
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     margin-top: 25px;
-    border: none;
-    border-radius: 10px;
     background: #222;
     color: white;
-    font-size: 18px;
-    font-weight: bold;
-}
-.result {
-    margin-top: 25px;
-    padding: 15px;
-    background: #eeeeee;
+    border: 0;
     border-radius: 10px;
-}
-.order {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
 }
-.delivery {
-    font-size: 18px;
+
+#sonuc {
+    margin-top: 25px;
+}
+
+.sonuc-kutu {
+    background: #eee;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.siparis {
+    font-size: 24px;
     font-weight: bold;
 }
 </style>
 </head>
+
 <body>
+
 <div class="container">
+
 <h1>🍗 Restoran Sipariş Hesaplama</h1>
+
 <label>Sipariş Günü</label>
-<select id="orderDay">
+
+<select id="gun">
     <option value="Pazartesi">Pazartesi</option>
     <option value="Çarşamba">Çarşamba</option>
     <option value="Cuma">Cuma</option>
 </select>
+
 <label>Sipariş Saati</label>
-<input type="time" id="orderTime">
-<!-- KLASİK DROP -->
-<div class="product">
-<h3>🍗 Klasik Drop</h3>
+<input type="time" id="saat">
+
+
+<div class="urun">
+
+<h2>Klasik Drop</h2>
+
 <label>Mevcut Stok</label>
-<input type="number" id="dropStock" min="0" placeholder="Örn: 59">
-<label>Gelen Ürün</label>
-<input type="number" id="dropIncoming" min="0" placeholder="Yoksa 0">
+<input type="number" id="dropMevcut" placeholder="Örn: 59">
+
+<label>Gelen</label>
+<input type="number" id="dropGelen" placeholder="Yoksa 0">
+
 <label>Kullanım</label>
-<input type="number" id="dropUsage" min="0" placeholder="Manuel kullanım">
-<p>Minimum Stok: <strong>30</strong></p>
+<input type="number" id="dropKullanim" placeholder="Bu haftaki kullanım">
+
+<p>Minimum stok: <b>30</b></p>
+
 </div>
-<!-- KANAT -->
-<div class="product">
-<h3>🍗 Kanat</h3>
+
+
+<div class="urun">
+
+<h2>Kanat</h2>
+
 <label>Mevcut Stok</label>
-<input type="number" id="wingStock" min="0" placeholder="Örn: 1318">
-<label>Gelen Ürün</label>
-<input type="number" id="wingIncoming" min="0" placeholder="Yoksa 0">
+<input type="number" id="kanatMevcut" placeholder="Örn: 1318">
+
+<label>Gelen</label>
+<input type="number" id="kanatGelen" placeholder="Yoksa 0">
+
 <label>Kullanım</label>
-<input type="number" id="wingUsage" min="0" placeholder="Manuel kullanım">
-<p>Minimum Stok: <strong>110</strong></p>
+<input type="number" id="kanatKullanim" placeholder="Bu haftaki kullanım">
+
+<p>Minimum stok: <b>110</b></p>
+
 </div>
-<!-- GOLDEN BUT -->
-<div class="product">
-<h3>🍗 Golden But</h3>
+
+
+<div class="urun">
+
+<h2>Golden But</h2>
+
 <label>Mevcut Stok</label>
-<input type="number" id="goldenStock" min="0" placeholder="Örn: 66">
-<label>Gelen Ürün</label>
-<input type="number" id="goldenIncoming" min="0" placeholder="Yoksa 0">
+<input type="number" id="butMevcut" placeholder="Örn: 66">
+
+<label>Gelen</label>
+<input type="number" id="butGelen" placeholder="Yoksa 0">
+
 <label>Kullanım</label>
-<input type="number" id="goldenUsage" min="0" placeholder="Manuel kullanım">
-<p>Minimum Stok: <strong>38</strong></p>
+<input type="number" id="butKullanim" placeholder="Bu haftaki kullanım">
+
+<p>Minimum stok: <b>38</b></p>
+
 </div>
-<button onclick="calculateOrder()">
+
+
+<button onclick="hesapla()">
 📦 Sipariş Miktarını Hesapla
 </button>
-<div id="result"></div>
+
+
+<div id="sonuc"></div>
+
 </div>
+
+
 <script>
-function calculateOrder() {
-    const day = document.getElementById("orderDay").value;
-    let deliveryDay = "";
-    if (day === "Pazartesi") {
-        deliveryDay = "Perşembe";
+
+function hesapla() {
+
+    let gun = document.getElementById("gun").value;
+
+    let teslimGun = "";
+
+    if (gun === "Pazartesi") {
+        teslimGun = "Perşembe";
     }
-    if (day === "Çarşamba") {
-        deliveryDay = "Cumartesi";
+
+    if (gun === "Çarşamba") {
+        teslimGun = "Cumartesi";
     }
-    if (day === "Cuma") {
-        deliveryDay = "Salı";
+
+    if (gun === "Cuma") {
+        teslimGun = "Salı";
     }
-    /*
-    KLASİK DROP
-    */
-    const dropStock =
-        Number(document.getElementById("dropStock").value) || 0;
-    const dropIncoming =
-        Number(document.getElementById("dropIncoming").value) || 0;
-    const dropUsage =
-        Number(document.getElementById("dropUsage").value) || 0;
-    const dropMinimum = 30;
-    const dropRemaining =
-        dropStock + dropIncoming - dropUsage;
-    const dropOrder =
-        Math.max(0, dropMinimum - dropRemaining);
-    /*
-    KANAT
-    */
-    const wingStock =
-        Number(document.getElementById("wingStock").value) || 0;
-    const wingIncoming =
-        Number(document.getElementById("wingIncoming").value) || 0;
-    const wingUsage =
-        Number(document.getElementById("wingUsage").value) || 0;
-    const wingMinimum = 110;
-    const wingRemaining =
-        wingStock + wingIncoming - wingUsage;
-    const wingOrder =
-        Math.max(0, wingMinimum - wingRemaining);
-    /*
-    GOLDEN BUT
-    */
-    const goldenStock =
-        Number(document.getElementById("goldenStock").value) || 0;
-    const goldenIncoming =
-        Number(document.getElementById("goldenIncoming").value) || 0;
-    const goldenUsage =
-        Number(document.getElementById("goldenUsage").value) || 0;
-    const goldenMinimum = 38;
-    const goldenRemaining =
-        goldenStock + goldenIncoming - goldenUsage;
-    const goldenOrder =
-        Math.max(0, goldenMinimum - goldenRemaining);
-    /*
-    SONUÇ
-    */
-    document.getElementById("result").innerHTML = `
-        <div class="result">
-            <h2>📦 Sipariş Sonucu</h2>
-            <p>
-            Sipariş Günü:
-            <strong>${day}</strong>
-            </p>
-            <p class="delivery">
-            Teslim Günü:
-            ${deliveryDay}
-            </p>
-            <hr>
-            <h3>🍗 Klasik Drop</h3>
-            <p>
-            Teslimat öncesi kalan:
-            <strong>${dropRemaining}</strong>
-            </p>
-            <p class="order">
-            Sipariş: ${dropOrder} adet
-            </p>
-            <h3>🍗 Kanat</h3>
-            <p>
-            Teslimat öncesi kalan:
-            <strong>${wingRemaining}</strong>
-            </p>
-            <p class="order">
-            Sipariş: ${wingOrder} adet
-            </p>
-            <h3>🍗 Golden But</h3>
-            <p>
-            Teslimat öncesi kalan:
-            <strong>${goldenRemaining}</strong>
-            </p>
-            <p class="order">
-            Sipariş: ${goldenOrder} adet
-            </p>
-        </div>
+
+
+    // KLASİK DROP
+
+    let dropMevcut =
+        Number(document.getElementById("dropMevcut").value) || 0;
+
+    let dropGelen =
+        Number(document.getElementById("dropGelen").value) || 0;
+
+    let dropKullanim =
+        Number(document.getElementById("dropKullanim").value) || 0;
+
+    let dropKalan =
+        dropMevcut + dropGelen - dropKullanim;
+
+    let dropSiparis =
+        Math.max(0, 30 - dropKalan);
+
+
+    // KANAT
+
+    let kanatMevcut =
+        Number(document.getElementById("kanatMevcut").value) || 0;
+
+    let kanatGelen =
+        Number(document.getElementById("kanatGelen").value) || 0;
+
+    let kanatKullanim =
+        Number(document.getElementById("kanatKullanim").value) || 0;
+
+    let kanatKalan =
+        kanatMevcut + kanatGelen - kanatKullanim;
+
+    let kanatSiparis =
+        Math.max(0, 110 - kanatKalan);
+
+
+    // GOLDEN BUT
+
+    let butMevcut =
+        Number(document.getElementById("butMevcut").value) || 0;
+
+    let butGelen =
+        Number(document.getElementById("butGelen").value) || 0;
+
+    let butKullanim =
+        Number(document.getElementById("butKullanim").value) || 0;
+
+    let butKalan =
+        butMevcut + butGelen - butKullanim;
+
+    let butSiparis =
+        Math.max(0, 38 - butKalan);
+
+
+    // SONUÇ
+
+    document.getElementById("sonuc").innerHTML = `
+
+    <div class="sonuc-kutu">
+
+        <h2>📦 Sipariş Sonucu</h2>
+
+        <p>
+        Sipariş günü: <b>${gun}</b>
+        </p>
+
+        <p>
+        Teslim günü: <b>${teslimGun}</b>
+        </p>
+
+        <hr>
+
+        <h3>Klasik Drop</h3>
+        <p>Kalan stok: ${dropKalan}</p>
+        <p class="siparis">
+        Sipariş: ${dropSiparis} adet
+        </p>
+
+        <h3>Kanat</h3>
+        <p>Kalan stok: ${kanatKalan}</p>
+        <p class="siparis">
+        Sipariş: ${kanatSiparis} adet
+        </p>
+
+        <h3>Golden But</h3>
+        <p>Kalan stok: ${butKalan}</p>
+        <p class="siparis">
+        Sipariş: ${butSiparis} adet
+        </p>
+
+    </div>
+
     `;
 }
+
 </script>
+
 </body>
 </html>
