@@ -57,17 +57,38 @@ button {
     font-size: 18px;
     font-weight: bold;
 }
-#sonuc {
+.siparis-listesi {
     margin-top: 25px;
-}
-.sonuc-kutu {
     background: #eeeeee;
-    padding: 15px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 15px;
 }
-.siparis {
-    font-size: 25px;
+.siparis-baslik {
+    text-align: center;
+    font-size: 28px;
     font-weight: bold;
+    margin-bottom: 15px;
+}
+.teslim {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.siparis-urun {
+    background: white;
+    padding: 18px;
+    margin-top: 12px;
+    border-radius: 12px;
+    text-align: center;
+}
+.urun-adi {
+    font-size: 20px;
+    font-weight: bold;
+}
+.koli {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 8px;
 }
 </style>
 </head>
@@ -155,19 +176,19 @@ placeholder="Örn: 30">
 <p>Minimum stok: <strong>38 adet</strong></p>
 </div>
 <button onclick="hesapla()">
-📦 Sipariş Miktarını Hesapla
+📦 SİPARİŞ MİKTARINI HESAPLA
 </button>
 <div id="sonuc"></div>
 </div>
 <script>
 function sayi(id) {
-    return Number(document.getElementById(id).value) || 0;
+    return Number(
+        document.getElementById(id).value
+    ) || 0;
 }
 function hesapla() {
-    // SİPARİŞ GÜNÜ
     const gun =
         document.getElementById("gun").value;
-    // TESLİMAT GÜNÜ
     let teslimGun = "";
     if (gun === "Pazartesi") {
         teslimGun = "Perşembe";
@@ -180,133 +201,106 @@ function hesapla() {
     }
     /*
     KLASİK DROP
-    1 koli = 35 adet
-    Minimum = 30 adet
     */
     const dropKapanis =
         sayi("dropKapanis");
-    const dropGelenKoli =
+    const dropGelen =
         sayi("dropGelen");
     const dropKullanim =
         sayi("dropKullanim");
-    const dropGelenAdet =
-        dropGelenKoli * 35;
     const dropKalan =
         dropKapanis +
-        dropGelenAdet -
+        (dropGelen * 35) -
         dropKullanim;
     const dropIhtiyac =
         Math.max(
             0,
             30 - dropKalan
         );
-    const dropSiparisKoli =
+    const dropSiparis =
         Math.ceil(
             dropIhtiyac / 35
         );
     /*
     KANAT
-    1 koli = 110 adet
-    Minimum = 110 adet
     */
     const kanatKapanis =
         sayi("kanatKapanis");
-    const kanatGelenKoli =
+    const kanatGelen =
         sayi("kanatGelen");
     const kanatKullanim =
         sayi("kanatKullanim");
-    const kanatGelenAdet =
-        kanatGelenKoli * 110;
     const kanatKalan =
         kanatKapanis +
-        kanatGelenAdet -
+        (kanatGelen * 110) -
         kanatKullanim;
     const kanatIhtiyac =
         Math.max(
             0,
             110 - kanatKalan
         );
-    const kanatSiparisKoli =
+    const kanatSiparis =
         Math.ceil(
             kanatIhtiyac / 110
         );
     /*
     GOLDEN BUT
-    1 koli = 38 adet
-    Minimum = 38 adet
     */
     const butKapanis =
         sayi("butKapanis");
-    const butGelenKoli =
+    const butGelen =
         sayi("butGelen");
     const butKullanim =
         sayi("butKullanim");
-    const butGelenAdet =
-        butGelenKoli * 38;
     const butKalan =
         butKapanis +
-        butGelenAdet -
+        (butGelen * 38) -
         butKullanim;
     const butIhtiyac =
         Math.max(
             0,
             38 - butKalan
         );
-    const butSiparisKoli =
+    const butSiparis =
         Math.ceil(
             butIhtiyac / 38
         );
     /*
-    SONUÇ
+    BÜYÜK SİPARİŞ LİSTESİ
     */
     document.getElementById("sonuc").innerHTML = `
-    <div class="sonuc-kutu">
-        <h2>📦 Sipariş Sonucu</h2>
-        <p>
-        Sipariş günü:
-        <strong>${gun}</strong>
-        </p>
-        <p>
-        Teslim günü:
-        <strong>${teslimGun}</strong>
-        </p>
-        <hr>
-        <h3>🍗 Klasik Drop</h3>
-        <p>
-        Teslimat öncesi kalan:
-        <strong>${dropKalan} adet</strong>
-        </p>
-        <p>
-        İhtiyaç:
-        <strong>${dropIhtiyac} adet</strong>
-        </p>
-        <p class="siparis">
-        Sipariş: ${dropSiparisKoli} koli
-        </p>
-        <h3>🍗 Kanat</h3>
-        <p>
-        Teslimat öncesi kalan:
-        <strong>${kanatKalan} adet</strong>
-        </p>
-        <p>
-        İhtiyaç:
-        <strong>${kanatIhtiyac} adet</strong>
-        </p>
-        <p class="siparis">
-        Sipariş: ${kanatSiparisKoli} koli
-        </p>
-        <h3>🍗 Golden But</h3>
-        <p>
-        Teslimat öncesi kalan:
-        <strong>${butKalan} adet</strong>
-        </p>
-        <p>
-        İhtiyaç:
-        <strong>${butIhtiyac} adet</strong>
-        </p>
-        <p class="siparis">
-        Sipariş: ${butSiparisKoli} koli
-        </p>
+    <div class="siparis-listesi">
+        <div class="siparis-baslik">
+            📦 SİPARİŞ LİSTESİ
+        </div>
+        <div class="teslim">
+            Teslim Günü:
+            <strong>${teslimGun}</strong>
+        </div>
+        <div class="siparis-urun">
+            <div class="urun-adi">
+                🍗 KLASİK DROP
+            </div>
+            <div class="koli">
+                ${dropSiparis} KOLİ
+            </div>
+        </div>
+        <div class="siparis-urun">
+            <div class="urun-adi">
+                🍗 KANAT
+            </div>
+            <div class="koli">
+                ${kanatSiparis} KOLİ
+            </div>
+        </div>
+        <div class="siparis-urun">
+            <div class="urun-adi">
+                🍗 GOLDEN BUT
+            </div>
+            <div class="koli">
+                ${butSiparis} KOLİ
+            </div>
+        </div>
     </div>
     `;
 }
